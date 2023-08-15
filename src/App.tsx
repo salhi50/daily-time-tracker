@@ -6,7 +6,8 @@ import {
   daysReducer,
   initializer,
 } from "./daysReducer";
-import { DAYS_KEY, isToday } from "./days";
+import { DAYS_KEY, Day, getNewDay, isToday } from "./days";
+import DayController from "./components/DayController";
 
 const App: React.FC = () => {
   const [days, dispatch] = React.useReducer<Reducer, State>(
@@ -14,11 +15,18 @@ const App: React.FC = () => {
     [],
     initializer
   );
+  const [selectedDay, setSelectedDay] = React.useState(() => {
+    const lastDay = days[days.length - 1];
+    if (lastDay) return lastDay;
+    return null;
+  });
 
   React.useEffect(() => {
     const lastDay = days[days.length - 1];
     if (days.length === 0 || (lastDay && !isToday(lastDay.date))) {
-      dispatch({ type: Actions.ADD });
+      const newDay = getNewDay();
+      setSelectedDay(newDay);
+      dispatch({ type: Actions.ADD, payload: newDay });
     }
   }, []);
 
@@ -26,7 +34,17 @@ const App: React.FC = () => {
     localStorage.setItem(DAYS_KEY, JSON.stringify(days));
   }, [days]);
 
-  return <></>;
+  return (
+    <>
+      {selectedDay && (
+        <DayController
+          days={days}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+        />
+      )}
+    </>
+  );
 };
 
 export default App;

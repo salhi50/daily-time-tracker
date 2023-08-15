@@ -1,4 +1,4 @@
-import { DAYS_KEY, Day, getNewDay } from "./days";
+import { DAYS_KEY, Day } from "./days";
 
 export type State = Day[];
 
@@ -10,6 +10,7 @@ export enum Actions {
 
 export type AddAction = {
   type: Actions.ADD;
+  payload: Day;
 };
 
 export type UpdateAction = {
@@ -31,7 +32,7 @@ export type Reducer = (state: State, action: Action) => State;
 export const daysReducer: Reducer = (state, action) => {
   switch (action.type) {
     case Actions.ADD:
-      return [...state, getNewDay()];
+      return [...state, action.payload];
     case Actions.UPDATE:
       return state.map((day) =>
         day.id === action.payload.id
