@@ -49,5 +49,5 @@ export type Initializer = () => State;
 
 export const initializer: Initializer = () => {
   const loc = localStorage.getItem(DAYS_KEY);
-  return loc ? JSON.parse(DAYS_KEY) : [];
+  return loc ? JSON.parse(loc) : [];
 };
