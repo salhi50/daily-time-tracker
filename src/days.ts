@@ -15,6 +15,12 @@ export interface Day {
 
 export type GetNewDayFunction = () => Day;
 export type GetDefaultHoursArrayFunction = () => Day["hours"];
+export type IsTodayFunction = (date: Date) => boolean;
+
+export const isToday: IsTodayFunction = (date) => {
+  const now = new Date();
+  return date.getDay() === now.getDay();
+};
 
 export const getDefaultHoursArray: GetDefaultHoursArrayFunction = () => {
   const hours: Day["hours"] = [];
