@@ -19,7 +19,7 @@ export type IsTodayFunction = (date: Date) => boolean;
 
 export const isToday: IsTodayFunction = (date) => {
   const now = new Date();
-  return date.getDay() === now.getDay();
+  return new Date(date).getDay() === now.getDay();
 };
 
 export const getDefaultHoursArray: GetDefaultHoursArrayFunction = () => {
