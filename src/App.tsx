@@ -6,7 +6,7 @@ import {
   daysReducer,
   initializer,
 } from "./daysReducer";
-import { isToday } from "./days";
+import { DAYS_KEY, isToday } from "./days";
 
 const App: React.FC = () => {
   const [days, dispatch] = React.useReducer<Reducer, State>(
@@ -21,6 +21,10 @@ const App: React.FC = () => {
       dispatch({ type: Actions.ADD });
     }
   }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem(DAYS_KEY, JSON.stringify(days));
+  }, [days]);
 
   return <></>;
 };
