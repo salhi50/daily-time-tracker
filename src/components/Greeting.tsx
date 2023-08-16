@@ -28,7 +28,7 @@ const Greeting: React.FC<GreetingProps> = ({ date = new Date() }) => {
 
   return (
     <>
-      <h2>{message}</h2>
+      <h4 className="fw-normal mb-2">{message}</h4>
     </>
   );
 };

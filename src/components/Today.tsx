@@ -9,7 +9,9 @@ const Today: React.FC = () => {
 
   return (
     <>
-      <h2>Today is {todayDate}</h2>
+      <h5 className="fw-normal">
+        Today is <span className="fw-medium">{todayDate}</span>
+      </h5>
     </>
   );
 };

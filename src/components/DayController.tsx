@@ -1,44 +1,72 @@
 import React from "react";
-import { Day, isToday } from "../days";
+import { isToday } from "../days";
+import DayContext from "../dayContext";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 
-interface DayControllerProps {
-  days: Day[];
-  selectedDay: Day;
-  setSelectedDay: React.Dispatch<React.SetStateAction<Day | null>>;
-}
+const DayController: React.FC = () => {
+  const { selectedDay, setSelectedDay, days } = React.useContext(DayContext);
 
-const DayController: React.FC<DayControllerProps> = ({
-  days,
-  selectedDay,
-  setSelectedDay,
-}) => {
-  const isFirstDay = selectedDay.id === days[0].id;
-  const isLastDay = selectedDay.id === days[days.length - 1].id;
-  const currentDayIndex = days.findIndex((d) => d.id === selectedDay.id);
+  const isFirstDay = () => {
+    if (selectedDay) {
+      return selectedDay.id === days[0].id;
+    }
+    return false;
+  };
+
+  const isLastDay = () => {
+    if (selectedDay) {
+      return selectedDay.id === days[days.length - 1].id;
+    }
+    return false;
+  };
+
+  const getCurrentDayIndex = () => {
+    if (selectedDay) {
+      return days.findIndex((d) => d.id === selectedDay.id);
+    }
+    return -1;
+  };
 
   const getNextDay = () => {
-    if (isLastDay) return;
-    setSelectedDay(days[currentDayIndex + 1]);
+    if (isLastDay()) return;
+    setSelectedDay(days[getCurrentDayIndex() + 1]);
   };
 
   const getPrevDay = () => {
-    if (isFirstDay) return;
-    setSelectedDay(days[currentDayIndex - 1]);
+    if (isFirstDay()) return;
+    setSelectedDay(days[getCurrentDayIndex() - 1]);
   };
 
-  const title = isToday(selectedDay.date)
-    ? "Today"
-    : new Date(selectedDay.date).toLocaleDateString();
+  const getTitle = () => {
+    if (selectedDay) {
+      return isToday(selectedDay.date)
+        ? "Today"
+        : new Date(selectedDay.date).toLocaleDateString();
+    }
+    return "";
+  };
 
   return (
     <>
-      <button disabled={isFirstDay} onClick={getPrevDay}>
-        &lt;
-      </button>
-      <span>{title}</span>
-      <button disabled={isLastDay} onClick={getNextDay}>
-        &gt;
-      </button>
+      <div className="d-flex justify-content-center my-3">
+        <button
+          className="btn btn-light border rounded-end-0"
+          disabled={isFirstDay()}
+          onClick={getPrevDay}
+        >
+          <BsChevronLeft />
+        </button>
+        <span className="py-2 px-3 bg-light border-start-0 border-end-0 border">
+          {getTitle()}
+        </span>
+        <button
+          className="btn btn-light border rounded-start-0"
+          disabled={isLastDay()}
+          onClick={getNextDay}
+        >
+          <BsChevronRight />
+        </button>
+      </div>
     </>
   );
 };
